@@ -1,0 +1,24 @@
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 2rem;
+  background-color: #1e293b;
+  border-top: 1px solid #334155;
+}
+
+.footer-container p {
+  margin: 0;
+  font-size: 0.85rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #94a3b8;
+}
+
+.stats-summary {
+  font-size: 0.85rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #cbd5e1;
+  background-color: #334155;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+}

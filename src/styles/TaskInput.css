@@ -1,0 +1,65 @@
+.task-input-container {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.25rem 2rem;
+  background: linear-gradient(135deg, #f1f5f9, #e8edf5);
+  border-bottom: 1px solid #dde3ec;
+}
+
+.task-input-container input[type="text"] {
+  flex: 1;
+  padding: 0.65rem 1.1rem;
+  font-size: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #334155;
+  background-color: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.task-input-container input[type="text"]:hover {
+  border-color: #94a3b8;
+}
+
+.task-input-container input[type="text"]:focus {
+  border-color: #1e293b;
+  background-color: #f8fafc;
+  box-shadow: 0 0 0 4px rgba(30, 41, 59, 0.08);
+}
+
+.task-input-container input[type="text"]::placeholder {
+  color: #94a3b8;
+  font-style: italic;
+  letter-spacing: 0.2px;
+}
+
+.btn-add {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.4rem;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  color: #f1f5f9;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: background 0.25s ease, transform 0.1s ease, box-shadow 0.25s ease;
+  box-shadow: 0 2px 6px rgba(30, 41, 59, 0.2);
+}
+
+.btn-add:hover {
+  background: linear-gradient(135deg, #334155, #475569);
+  box-shadow: 0 6px 14px rgba(30, 41, 59, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-add:active {
+  transform: scale(0.97) translateY(0);
+  box-shadow: 0 2px 4px rgba(30, 41, 59, 0.15);
+}
