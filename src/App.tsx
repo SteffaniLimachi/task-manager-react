@@ -6,22 +6,10 @@ import Header from "./componentes/Header";
 import TaskList from "./componentes/TaskList";
 import TaskInput from "./componentes/TaskInput";
 import Footer from "./componentes/Footer";
-import Login from "./componentes/Login";
 
 function App() {
 
-    const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
     const [tasks, setTasks] = useState<Task[]>([]);
-
-    const handleLogin = (newToken: string) => {
-        setToken(newToken);
-    };
-
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        setToken(null);
-        setTasks([]);
-    };
 
     const fetchTasks = () => {
         fetch(`${API_URL}/tasks`)
@@ -33,51 +21,29 @@ function App() {
     };
 
     useEffect(() => {
-        if (token) fetchTasks();
-    }, [token]);
-
-    if (!token) {
-        return <Login onLogin={handleLogin} />;
-    }
+        fetchTasks();
+    }, []);
 
     const addTask = (taskText: string) => {
-        const newTask: Task = {
-            id: Date.now(),
-            text: taskText,
-            completed: false
-        };
-
         fetch(`${API_URL}/tasks`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(newTask)
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: taskText, completed: false })
         })
         .then(() => fetchTasks())
-        .catch((error) => {
-            console.error("Error al crear tarea:", error);
-        });
-    }
+        .catch((error) => console.error("Error al crear tarea:", error));
+    };
 
     const toggleTask = (id: number) => {
-        fetch(`${API_URL}/tasks/${id}`, {
-            method: "PUT"
-        })
+        fetch(`${API_URL}/tasks/${id}`, { method: "PUT" })
         .then(() => fetchTasks())
-        .catch((error) => {
-            console.error("Error al actualizar tarea:", error);
-        });
+        .catch((error) => console.error("Error al actualizar tarea:", error));
     };
 
     const deleteTask = (id: number) => {
-        fetch(`${API_URL}/tasks/${id}`, {
-            method: "DELETE"
-        })
+        fetch(`${API_URL}/tasks/${id}`, { method: "DELETE" })
         .then(() => fetchTasks())
-        .catch((error) => {
-            console.error("Error al eliminar tarea:", error);
-        });
+        .catch((error) => console.error("Error al eliminar tarea:", error));
     };
 
     const totalTasks = tasks.length;
@@ -85,16 +51,15 @@ function App() {
 
     return (
         <div className="app-main-layout">
-            <Header onLogout={handleLogout} />
+            <Header />
             <main>
                 <TaskInput onAddTask={addTask} />
-                <TaskList 
-                    tasks={tasks} 
-                    onDeleteTask={deleteTask} 
-                    onToggleTask={toggleTask} 
+                <TaskList
+                    tasks={tasks}
+                    onDeleteTask={deleteTask}
+                    onToggleTask={toggleTask}
                 />
             </main>
-            {/* Pasamos los contadores al Footer */}
             <Footer total={totalTasks} completed={completedTasks} />
         </div>
     );
