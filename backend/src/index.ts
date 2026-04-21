@@ -36,6 +36,7 @@ app.get("/tasks", async (req: Request, res: Response) => {
         const tasks = await prisma.tasks.findMany({ orderBy: { id: "asc" } });
         res.json(tasks);
     } catch (error) {
+        console.error("Error GET /tasks:", error);
         res.status(500).json({ message: "Error al obtener tareas" });
     }
 });
