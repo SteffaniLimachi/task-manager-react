@@ -1,19 +1,116 @@
-const express = require("express");
+import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
+import type { Request, Response } from "express";
+import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const jwt = require("jsonwebtoken");
+const SECRET_KEY = "mi_clave_secreta";
+
+const cors = require("cors");
 
 const app = express();
 const PORT = 3000;
 
-let tasks = [
-    {id:1, title: "Study Express", completed: false},
-    {id:2, title: "Build backend", completed: false},
-]
+app.use(cors());
+app.use(express.json());
 
-app.get("/", (req: any, res: any) => {
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+const prisma = new PrismaClient({ adapter });
+
+app.get("/", (req: Request, res: Response) => {
     res.send("Backend is working!");
 });
 
-app.get("/tasks", (req: any, res: any) => {
-    res.json(tasks);
+app.get("/tasks", async (req: Request, res: Response) => {
+    try {
+        const tasks = await prisma.tasks.findMany({ orderBy: { id: "asc" } });
+        res.json(tasks);
+    } catch (error) {
+        res.status(500).json({ message: "Error al obtener tareas" });
+    }
+});
+
+app.post("/tasks", async (req: Request, res: Response) => {
+    try {
+        const { text, completed } = req.body;
+        if (!text) {
+            res.status(400).json({ message: "El campo text es requerido" });
+            return;
+        }
+        const newTask = await prisma.tasks.create({
+            data: { text, completed: completed ?? false }
+        });
+        res.json(newTask);
+    } catch (error) {
+        res.status(500).json({ message: "Error al crear tarea" });
+    }
+});
+
+app.put("/tasks/:id", async (req: Request, res: Response) => {
+    try {
+        const id = Number(req.params.id);
+        const task = await prisma.tasks.findUnique({ where: { id } });
+        if (!task) {
+            res.status(404).json({ message: "Tarea no encontrada" });
+            return;
+        }
+        const updatedTask = await prisma.tasks.update({
+            where: { id },
+            data: { completed: !task.completed }
+        });
+        res.json(updatedTask);
+    } catch (error) {
+        res.status(500).json({ message: "Error al actualizar tarea" });
+    }
+});
+
+app.delete("/tasks/:id", async (req: Request, res: Response) => {
+    try {
+        const id = Number(req.params.id);
+        await prisma.tasks.delete({ where: { id } });
+        res.json({ message: "Tarea eliminada", id });
+    } catch (error) {
+        res.status(500).json({ message: "Error al eliminar tarea" });
+    }
+});
+
+app.post("/login", (req: Request, res: Response) => {
+    const { username, password } = req.body;
+    
+    if (username === "admin" && password === "1234") {
+        const token = jwt.sign(
+            { username: username },
+            SECRET_KEY,
+            { expiresIn: "1h" }
+        );
+        res.json({ token });
+    } else {
+        res.status(401).json({ message: "Credenciales incorrectas" });
+    }
+});
+
+const verifyToken = (req: Request, res: Response, next: any) => {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (!token) {
+        res.status(401).json({ message: "Token requerido" });
+        return;
+    }
+
+    jwt.verify(token, SECRET_KEY, (err: any, decoded: any) => {
+        if (err) {
+            return res.status(403).json({ message: "Token inválido" });
+        }
+        next();
+    });
+};
+
+app.get("/private", verifyToken, (req: Request, res: Response) => {
+    res.json({ message: "Acceso permitido" });
 });
 
 app.listen(PORT, () => {
