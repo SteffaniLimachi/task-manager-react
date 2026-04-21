@@ -12,9 +12,14 @@ const SECRET_KEY = "mi_clave_secreta";
 const cors = require("cors");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+const allowedOrigins = [
+    "http://localhost:5173",
+    process.env.FRONTEND_URL,
+].filter(Boolean);
+
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });

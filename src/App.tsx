@@ -1,6 +1,7 @@
 import './App.css';
 import { useEffect, useState } from "react";
 import { Task } from "./types";
+import { API_URL } from "./config";
 import Header from "./componentes/Header";
 import TaskList from "./componentes/TaskList";
 import TaskInput from "./componentes/TaskInput";
@@ -23,7 +24,7 @@ function App() {
     };
 
     const fetchTasks = () => {
-        fetch("http://localhost:3000/tasks")
+        fetch(`${API_URL}/tasks`)
             .then(res => res.json())
             .then(data => setTasks(data))
             .catch(error => console.error("Error al obtener tareas:", error));
@@ -44,7 +45,7 @@ function App() {
             completed: false
         };
 
-        fetch("http://localhost:3000/tasks", {
+        fetch(`${API_URL}/tasks`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -58,7 +59,7 @@ function App() {
     }
 
     const toggleTask = (id: number) => {
-        fetch(`http://localhost:3000/tasks/${id}`, {
+        fetch(`${API_URL}/tasks/${id}`, {
             method: "PUT"
         })
         .then(() => fetchTasks())
@@ -68,7 +69,7 @@ function App() {
     };
 
     const deleteTask = (id: number) => {
-        fetch(`http://localhost:3000/tasks/${id}`, {
+        fetch(`${API_URL}/tasks/${id}`, {
             method: "DELETE"
         })
         .then(() => fetchTasks())
