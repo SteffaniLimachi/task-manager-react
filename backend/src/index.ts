@@ -5,6 +5,7 @@ import express from "express";
 import type { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 
 const jwt = require("jsonwebtoken");
 const SECRET_KEY = "mi_clave_secreta";
@@ -22,7 +23,8 @@ const allowedOrigins = [
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 app.get("/", (req: Request, res: Response) => {

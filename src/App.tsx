@@ -26,7 +26,9 @@ function App() {
     const fetchTasks = () => {
         fetch(`${API_URL}/tasks`)
             .then(res => res.json())
-            .then(data => setTasks(data))
+            .then(data => {
+                if (Array.isArray(data)) setTasks(data);
+            })
             .catch(error => console.error("Error al obtener tareas:", error));
     };
 
