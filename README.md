@@ -1,17 +1,58 @@
-# React + Vite
+# Task Manager React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación de gestión de tareas (crear, completar y eliminar tareas) con frontend en React + TypeScript (Vite) y backend en Express + Prisma + PostgreSQL.
 
-Currently, two official plugins are available:
+<!-- BADGE_CI -->
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🔧 Instalación local
 
-## React Compiler
+```bash
+git clone https://github.com/SteffaniLimachi/task-manager-react.git
+cd task-manager-react
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# Frontend
+npm install
 
-## Expanding the ESLint configuration
+# Backend
+cd backend
+npm install
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# task-manager-react
+### Variables de entorno
+
+Crea un archivo `.env` en la raíz del proyecto (frontend) con las siguientes claves (sin valores reales en este documento):
+
+```
+VITE_API_URL=
+```
+
+Crea un archivo `.env` en `backend/` con las siguientes claves:
+
+```
+DATABASE_URL=
+PORT=
+FRONTEND_URL=
+```
+
+## 📄 Comandos disponibles
+
+**Frontend** (raíz del proyecto):
+
+| Comando         | Descripción                              |
+|-----------------|-------------------------------------------|
+| `npm run dev`   | Levanta el entorno de desarrollo          |
+| `npm run build` | Genera el build de producción             |
+| `npm run lint`  | Corre el linter (ESLint)                  |
+| `npm run preview` | Sirve el build de producción localmente |
+
+**Backend** (`backend/`):
+
+| Comando         | Descripción                                    |
+|-----------------|--------------------------------------------------|
+| `npm run dev`   | Levanta el servidor de desarrollo (ts-node-dev)  |
+| `npm run build` | Compila TypeScript a `dist/`                     |
+| `npm start`     | Corre el servidor compilado                      |
+
+## 🗄️ Base de datos
+
+PostgreSQL con esquema y cliente gestionados con Prisma (`backend/prisma/schema.prisma`). El modelo principal es `tasks` (`id`, `text`, `completed`). `prisma generate` se ejecuta automáticamente en el `postinstall` del backend.
