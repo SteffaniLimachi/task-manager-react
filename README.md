@@ -57,3 +57,4 @@ FRONTEND_URL=
 
 PostgreSQL con esquema y cliente gestionados con Prisma (`backend/prisma/schema.prisma`). El modelo principal es `tasks` (`id`, `text`, `completed`). `prisma generate` se ejecuta automáticamente en el `postinstall` del backend.
 # prueba de protección
+# prueba de protección_1
