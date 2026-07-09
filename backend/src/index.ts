@@ -27,7 +27,7 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
-app.get("/", (req: Request, res: Response) => {
+app.("/", (req: Request, res: Response) => {
     res.send("Backend is working!");
 });
 
