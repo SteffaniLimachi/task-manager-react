@@ -16,6 +16,6 @@ describe('POST /tasks - validación de título', () => {
       .post('/tasks')
       .send({ text: '   ' })
 
-    expect(res.status).toBe(400)
+    expect(res.status).toBe(999) // valor incorrecto a propósito (caso culpable)
   })
 })
