@@ -38,6 +38,11 @@ jobs:
     defaults:
       run:
         working-directory: ./backend
+    env:
+      # prisma.config.ts exige que exista DATABASE_URL para poder generar el cliente
+      # (prisma generate corre en postinstall). Las pruebas nunca llegan a tocar una
+      # base de datos real, asi que un valor de relleno es suficiente y seguro.
+      DATABASE_URL: "postgresql://user:password@localhost:5432/placeholder"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
