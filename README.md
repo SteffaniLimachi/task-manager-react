@@ -57,3 +57,22 @@ JWT_SECRET=
 ## 🗄️ Base de datos
 
 PostgreSQL con esquema y cliente gestionados con Prisma (`backend/prisma/schema.prisma`). El modelo principal es `tasks` (`id`, `text`, `completed`). `prisma generate` se ejecuta automáticamente en el `postinstall` del backend.
+
+## 🐳 Levantar todo con Docker Compose
+
+Requiere Docker Engine + plugin de Compose (`docker compose version`). No necesitas instalar Node, PostgreSQL ni ejecutar `npm install` manualmente.
+
+```bash
+cp .env.example .env
+docker compose up --build
+```
+
+La primera vez, en otra terminal, aplica las migraciones de Prisma:
+
+```bash
+docker compose exec backend npx prisma migrate deploy
+```
+
+Luego abre `http://localhost:5173`. El backend queda expuesto en `http://localhost:4000` y PostgreSQL en el puerto `5432`.
+
+Para detener los contenedores conservando los datos: `docker compose down`. Para borrar también el volumen de PostgreSQL: `docker compose down -v`.
