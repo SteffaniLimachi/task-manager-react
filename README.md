@@ -32,6 +32,7 @@ Crea un archivo `.env` en `backend/` con las siguientes claves:
 DATABASE_URL=
 PORT=
 FRONTEND_URL=
+JWT_SECRET=
 ```
 
 ## 📄 Comandos disponibles

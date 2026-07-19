@@ -43,6 +43,9 @@ jobs:
       # (prisma generate corre en postinstall). Las pruebas nunca llegan a tocar una
       # base de datos real, asi que un valor de relleno es suficiente y seguro.
       DATABASE_URL: "postgresql://user:password@localhost:5432/placeholder"
+      # JWT_SECRET si es sensible de verdad (firma los tokens de sesion), por eso
+      # viene de GitHub Secrets y nunca aparece en texto plano en este archivo.
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

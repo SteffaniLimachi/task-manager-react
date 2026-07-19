@@ -9,7 +9,7 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
-const SECRET_KEY = "mi_clave_secreta";
+const SECRET_KEY = process.env.JWT_SECRET as string;
 
 const app = express();
 
