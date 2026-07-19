@@ -39,12 +39,7 @@ jobs:
       run:
         working-directory: ./backend
     env:
-      # prisma.config.ts exige que exista DATABASE_URL para poder generar el cliente
-      # (prisma generate corre en postinstall). Las pruebas nunca llegan a tocar una
-      # base de datos real, asi que un valor de relleno es suficiente y seguro.
       DATABASE_URL: "postgresql://user:password@localhost:5432/placeholder"
-      # JWT_SECRET si es sensible de verdad (firma los tokens de sesion), por eso
-      # viene de GitHub Secrets y nunca aparece en texto plano en este archivo.
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
     steps:
       - uses: actions/checkout@v4
@@ -55,6 +50,38 @@ jobs:
           cache-dependency-path: backend/package-lock.json
       - run: npm ci
       - run: npx vitest run
+
+  migraciones:
+    name: Migraciones y Seeds
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+    defaults:
+      run:
+        working-directory: ./backend
+    env:
+      DATABASE_URL: postgresql://testuser:testpass@localhost:5432/testdb
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+      - run: npx prisma migrate deploy
 
   e2e:
     name: Pruebas E2E
