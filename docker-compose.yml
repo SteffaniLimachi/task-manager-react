@@ -23,6 +23,7 @@ services:
       DATABASE_URL: postgresql://appuser:apppass@postgres:5432/appdb
       PORT: 4000
       FRONTEND_URL: http://localhost:5173
+      JWT_SECRET: clave_secreta_dev_docker_compose
     ports:
       - "4000:4000"
     depends_on:
