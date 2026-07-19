@@ -82,6 +82,7 @@ jobs:
           cache-dependency-path: backend/package-lock.json
       - run: npm ci
       - run: npx prisma migrate deploy
+      - run: npx prisma db seed
 
   e2e:
     name: Pruebas E2E
