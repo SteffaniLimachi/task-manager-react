@@ -107,6 +107,7 @@ jobs:
       - name: Instalar Railway CLI
         run: npm install -g @railway/cli
       - name: Desplegar a Railway (staging)
+        working-directory: ./backend
         run: railway up --service backend --environment staging
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
