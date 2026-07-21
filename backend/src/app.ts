@@ -29,6 +29,10 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Backend is working!");
 });
 
+app.get("/health", (req: Request, res: Response) => {
+    res.status(200).json({ status: "ok" });
+});
+
 app.get("/tasks", async (req: Request, res: Response) => {
     try {
         const tasks = await prisma.tasks.findMany({ orderBy: { id: "asc" } });
