@@ -129,4 +129,4 @@ jobs:
         working-directory: ./backend
         run: railway up --service backend --environment production
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_PRODUCTION }}
