@@ -14,7 +14,6 @@ function Footer({ total, completed }: FooterProps) {
                 {`${completed} de ${total} tareas completadas`}
             </div>
             <p>© {year} - Task Manager Steffani</p>
-            <p>Desplegado automaticamente con CI/CD</p>
         </footer>
     );
 }
